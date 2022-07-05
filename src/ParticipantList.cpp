@@ -27,6 +27,11 @@ bool ParticipantList::removeParticipant(std::string pname)
 	return false;
 }
 
+const std::list<Participant>* ParticipantList::getParticipans() const
+{
+	return this->participants;
+}
+
 Participant* ParticipantList::getParticipantByName(std::string pname)
 {
 	for (auto i = this->participants->begin(); i != this->participants->end(); ++i) {

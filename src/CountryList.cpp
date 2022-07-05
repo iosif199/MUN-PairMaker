@@ -27,6 +27,11 @@ bool CountryList::removeCountry(std::string cname)
 	return false;
 }
 
+const std::list<Country>* CountryList::getCountries() const
+{
+	return this->countries;
+}
+
 Country* CountryList::getCountryByName(std::string cname)
 {
 	for (auto i = this->countries->begin(); i != this->countries->end(); ++i) {

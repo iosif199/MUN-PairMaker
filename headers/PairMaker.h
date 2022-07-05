@@ -5,6 +5,12 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <ctime>
+#include <fstream>
+#include "CountryList.h"
+#include "ParticipantList.h"
+#include "pugixml.hpp"
+
 
 class PairMaker
 {
@@ -18,14 +24,19 @@ public:
 	~PairMaker();
 
 	void addCountry(std::string cname);
+	void addCountriesFromCList(CountryList* lst);
+
 	void addParticipant(std::string pname);
+	void addParticipantsFromPList(ParticipantList* lst);
 
 	void removeCountry(std::string cname);
 	void removeParticipant(std::string pname);
 
 	void generatePairs();
 	std::map<std::string, std::string> getPairs();
-	void writePairsToXML();
+	
+	void writePairsToCSV(std::string fname);
+	void writePairsToXML(std::string fname);
 };
 
 

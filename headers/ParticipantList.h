@@ -18,6 +18,7 @@ public:
 	void addParticipant(Participant new_participant);
 	bool removeParticipant(std::string pname);
 
+	const std::list<Participant>* getParticipans() const;
 	Participant* getParticipantByName(std::string pname);
 };
 

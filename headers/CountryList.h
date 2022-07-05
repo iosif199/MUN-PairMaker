@@ -18,6 +18,7 @@ public:
 	void addCountry(Country new_country);
 	bool removeCountry(std::string cname);
 
+	const std::list<Country>* getCountries() const;
 	Country* getCountryByName(std::string cname);
 };
 
