@@ -1,6 +1,6 @@
 
-#ifndef __COUNTRYLIST_H__
-#define __COUNTRYLIST_H__
+#ifndef __COUNTRYLIST__
+#define __COUNTRYLIST__
 
 #include <iostream>
 #include <list>
@@ -17,9 +17,11 @@ public:
 
 	void addCountry(Country new_country);
 	bool removeCountry(std::string cname);
+	void clearList();
 
-	Country* getCountryByName(std::string cname);
+	const std::list<Country>* getCountries() const;
+	Country* getCountryByName(std::string cname) const;
 };
 
-#endif // !__COUNTRYLIST_H__
+#endif // !__COUNTRYLIST__
 

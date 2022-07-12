@@ -1,6 +1,6 @@
 
-#ifndef __PARTICIPANT_H__
-#define __PARTICIPANT_H__
+#ifndef __PARTICIPANT__
+#define __PARTICIPANT__
 
 #include <iostream>
 
@@ -13,10 +13,10 @@ public:
 	Participant(std::string name);
 	~Participant();
 
-	std::string getName();
+	std::string getName() const;
 	void setName(std::string name);
 };
 
 
-#endif // !__PARTICIPANT_H__
+#endif // !__PARTICIPANT__
 

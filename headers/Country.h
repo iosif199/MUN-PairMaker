@@ -1,6 +1,6 @@
 
-#ifndef __COUNTRY_H__
-#define __COUNTRY_H__
+#ifndef __COUNTRY__
+#define __COUNTRY__
 
 #include <iostream>
 
@@ -13,9 +13,9 @@ public:
 	Country(std::string name);
 	~Country();
 
-	std::string getName();
+	std::string getName() const;
 	void setName(std::string name);
 
 };
 
-#endif // !__COUNTRY_H__
+#endif // !__COUNTRY__
