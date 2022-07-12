@@ -9,7 +9,7 @@ Country::~Country()
 {
 }
 
-std::string Country::getName()
+std::string Country::getName() const
 {
     return this->name;
 }

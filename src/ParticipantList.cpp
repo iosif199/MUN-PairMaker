@@ -27,11 +27,22 @@ bool ParticipantList::removeParticipant(std::string pname)
 	return false;
 }
 
-const std::list<Participant>* ParticipantList::getParticipans() const
+void ParticipantList::clearList()
+{
+	this->participants->clear();
+}
+
+const std::list<Participant>* ParticipantList::getParticipants() const
 {
 	return this->participants;
 }
 
+/**
+ * @brief Finds and returns a participant, according to his name
+ * 
+ * @param pname The participant's name
+ * @return Participant* A pointer to the participant, or nullptr if he does not exist
+ */
 Participant* ParticipantList::getParticipantByName(std::string pname)
 {
 	for (auto i = this->participants->begin(); i != this->participants->end(); ++i) {

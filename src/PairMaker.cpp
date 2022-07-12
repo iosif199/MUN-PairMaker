@@ -1,9 +1,34 @@
 #include "PairMaker.h"
 
+/**
+ * @brief Construct a new empty PairMaker object
+ * 
+ */
 PairMaker::PairMaker()
 {
+	this->country_names		= new std::list<std::string>();
+	this->participant_names	= new std::list<std::string>();
+	this->pairs				= new std::map<std::string, std::string>();
+}
+
+/**
+ * @brief Construct a new Pair Maker:: Pair Maker object
+ * 
+ * @param clist 
+ * @param plist 
+ */
+PairMaker::PairMaker(const CountryList* clist, const ParticipantList* plist)
+{
 	this->country_names = new std::list<std::string>();
+	for (auto c : *clist->getCountries()) {
+		this->country_names->push_back(c.getName());
+	}
+
 	this->participant_names = new std::list<std::string>();
+	for (auto p : *plist->getParticipants()) {
+		this->participant_names->push_back(p.getName());
+	}
+
 	this->pairs = new std::map<std::string, std::string>();
 }
 
@@ -33,7 +58,7 @@ void PairMaker::addParticipant(std::string pname)
 
 void PairMaker::addParticipantsFromPList(ParticipantList* lst)
 {
-	for (auto participant : *lst->getParticipans()) {
+	for (auto participant : *lst->getParticipants()) {
 		this->addParticipant(std::string(participant.getName()));
 	}
 }
@@ -76,9 +101,6 @@ void PairMaker::generatePairs()
 	// Iterators which will hold the selected country and participant
 	std::list<std::string>::iterator selected_country, selected_participant;
 
-	// Set a seed for rand
-	srand(time(NULL));
-
 	int c_index, p_index;
 	while (!participants.empty()) {
 		// Get random indexes
@@ -107,24 +129,35 @@ std::map<std::string, std::string> PairMaker::getPairs()
 	return *this->pairs;
 }
 
-void PairMaker::writePairsToCSV(std::string fname)
+/**
+ * @brief Exports the pairs in a CSV file
+ * 
+ * @param fname The file's name to export the pairs
+ * @param separator The separator for the fields. By default is ",", but Microsoft Excel uses ";"
+ */
+void PairMaker::writePairsToCSV(std::string fname, const char* separator)
 {
 	std::ofstream output_csv(fname);
 
-	output_csv << "Country" << ';' << "Participant" << std::endl;
+	output_csv << "Country" << separator << "Participant" << std::endl;
 
 	for (const auto pair : *this->pairs) {
-		output_csv << pair.first << ';' << pair.second << std::endl;
+		output_csv << pair.first << separator << pair.second << std::endl;
 	}
 
 	output_csv.close();
 }
 
+/**
+ * @brief Exports the pairs in an XML file
+ * 
+ * @param fname The file's name to export the pairs
+ */
 void PairMaker::writePairsToXML(std::string fname)
 {
 	pugi::xml_document doc;
 
-	pugi::xml_node pairs_node = doc.append_child("mun_pairs");
+	pugi::xml_node pairs_node = doc.append_child("mun_pairmaker").append_child("pairs");
 
 	for (const auto p : *this->pairs) {
 		pugi::xml_node pair = pairs_node.append_child("pair");

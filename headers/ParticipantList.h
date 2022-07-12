@@ -1,6 +1,6 @@
 
-#ifndef __PARTICIPANTLIST_H__
-#define __PARTICIPANTLIST_H__
+#ifndef __PARTICIPANTLIST__
+#define __PARTICIPANTLIST__
 
 #include <iostream>
 #include <list>
@@ -17,11 +17,12 @@ public:
 
 	void addParticipant(Participant new_participant);
 	bool removeParticipant(std::string pname);
+	void clearList();
 
-	const std::list<Participant>* getParticipans() const;
+	const std::list<Participant>* getParticipants() const;
 	Participant* getParticipantByName(std::string pname);
 };
 
 
-#endif // !__PARTICIPANTLIST_H__
+#endif // !__PARTICIPANTLIST__
 
