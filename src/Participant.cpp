@@ -9,7 +9,7 @@ Participant::~Participant()
 {
 }
 
-std::string Participant::getName()
+std::string Participant::getName() const
 {
 	return this->name;
 }

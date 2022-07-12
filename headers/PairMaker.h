@@ -1,6 +1,6 @@
 
-#ifndef __PAIRMAKER_H__
-#define __PAIRMAKER_H__
+#ifndef __PAIRMAKER__
+#define __PAIRMAKER__
 
 #include <iostream>
 #include <list>
@@ -21,6 +21,7 @@ private:
 
 public:
 	PairMaker();
+	PairMaker(const CountryList* clist, const ParticipantList* plist);
 	~PairMaker();
 
 	void addCountry(std::string cname);
@@ -35,9 +36,9 @@ public:
 	void generatePairs();
 	std::map<std::string, std::string> getPairs();
 	
-	void writePairsToCSV(std::string fname);
+	void writePairsToCSV(std::string fname, const char* separator = ",");
 	void writePairsToXML(std::string fname);
 };
 
 
-#endif // !__PAIRMAKER_H__
+#endif // !__PAIRMAKER__

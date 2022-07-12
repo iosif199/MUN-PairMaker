@@ -1,6 +1,7 @@
 #include "GUI/AddCountriesFrame.h"
 
-AddCountriesFrame::AddCountriesFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+AddCountriesFrame::AddCountriesFrame( wxWindow* parent, CountryList* clist, wxListBox* parent_list, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style )
+	: wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 
@@ -20,7 +21,7 @@ AddCountriesFrame::AddCountriesFrame( wxWindow* parent, wxWindowID id, const wxS
 	title_staticline = new wxStaticLine( mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	mainPanel_bSizer->Add( title_staticline, 0, wxEXPAND | wxALL, 5 );
 
-	newCountries_listBox = new wxListBox( mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	newCountries_listBox = new wxListBox( mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_SORT);
 	mainPanel_bSizer->Add( newCountries_listBox, 1, wxALL|wxEXPAND, 5 );
 
 	wxBoxSizer* countryFields_bSizer;
@@ -40,7 +41,7 @@ AddCountriesFrame::AddCountriesFrame( wxWindow* parent, wxWindowID id, const wxS
 	countryProperties_bSizer = new wxBoxSizer( wxHORIZONTAL );
 
 	addCountry_btn = new wxButton( mainPanel, wxID_ANY, wxT("Add"), wxDefaultPosition, wxDefaultSize, 0 );
-	countryProperties_bSizer->Add( addCountry_btn, 0, wxALL|wxALIGN_RIGHT, 5 );
+	countryProperties_bSizer->Add( addCountry_btn, 0, wxALL, 5 );
 
 	rmCountry_btn = new wxButton( mainPanel, wxID_ANY, wxT("Remove"), wxDefaultPosition, wxDefaultSize, 0 );
 	countryProperties_bSizer->Add( rmCountry_btn, 0, wxALL, 5 );
@@ -80,6 +81,9 @@ AddCountriesFrame::AddCountriesFrame( wxWindow* parent, wxWindowID id, const wxS
 	rmCountry_btn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddCountriesFrame::RemoveCountryBtnClick ), NULL, this );
 	finish_btn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddCountriesFrame::FinishBtnClick ), NULL, this );
 	cancel_btn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddCountriesFrame::CancelBtnClick ), NULL, this );
+
+	this->clist = clist;
+	this->parent_list = parent_list;
 }
 
 AddCountriesFrame::~AddCountriesFrame()
@@ -90,4 +94,59 @@ AddCountriesFrame::~AddCountriesFrame()
 	finish_btn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddCountriesFrame::FinishBtnClick ), NULL, this );
 	cancel_btn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddCountriesFrame::CancelBtnClick ), NULL, this );
 
+}
+
+void AddCountriesFrame::AddCountryBtnClick(wxCommandEvent& event)
+{
+	if (!this->countryName_textCtrl->IsEmpty()) {
+		this->newCountries_listBox->Append(this->countryName_textCtrl->GetValue());
+		this->countryName_textCtrl->Clear();
+	}
+}
+
+void AddCountriesFrame::RemoveCountryBtnClick(wxCommandEvent& event)
+{
+	int selected_index = this->newCountries_listBox->GetSelection();
+
+	// Check if there are countries in the list
+	if (this->newCountries_listBox->GetCount() == 0) {
+		wxMessageBox(
+			wxString("The country list is empty."),
+			"Cannot remove country",
+			wxOK | wxICON_ERROR,
+			this
+		);
+
+		return;
+	}
+
+	// Check if the user selected an item
+	if (selected_index < 0) {
+		wxMessageBox(
+			wxString("You have not selected a country to be deleted."),
+			"Cannot remove country",
+			wxOK | wxICON_WARNING,
+			this
+		);
+
+		return;
+	}
+
+	this->newCountries_listBox->Delete(selected_index);
+}
+
+void AddCountriesFrame::FinishBtnClick(wxCommandEvent& event)
+{
+	while (!this->newCountries_listBox->IsEmpty()) {
+		this->clist->addCountry(this->newCountries_listBox->GetString(0).ToStdString());
+		this->parent_list->Append(this->newCountries_listBox->GetString(0));
+		this->newCountries_listBox->Delete(0);
+	}
+
+	this->Destroy();
+}
+
+void AddCountriesFrame::CancelBtnClick(wxCommandEvent& event)
+{
+	this->Destroy();
 }

@@ -1,6 +1,7 @@
 #include "GUI/AddParticipantsFrame.h"
 
-AddParticipantsFrame::AddParticipantsFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+AddParticipantsFrame::AddParticipantsFrame( wxWindow* parent, ParticipantList* plist, wxListBox* parent_plist, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style )
+	: wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 
@@ -20,7 +21,7 @@ AddParticipantsFrame::AddParticipantsFrame( wxWindow* parent, wxWindowID id, con
 	title_staticline = new wxStaticLine( mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	mainPanel_bSizer->Add( title_staticline, 0, wxEXPAND | wxALL, 5 );
 
-	newParticipants_listBox = new wxListBox( mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	newParticipants_listBox = new wxListBox( mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_SORT);
 	mainPanel_bSizer->Add( newParticipants_listBox, 1, wxALL|wxEXPAND, 5 );
 
 	wxBoxSizer* participantsFields_bSizer;
@@ -40,7 +41,7 @@ AddParticipantsFrame::AddParticipantsFrame( wxWindow* parent, wxWindowID id, con
 	participantProperties_bSizer = new wxBoxSizer( wxHORIZONTAL );
 
 	addParticipant_btn = new wxButton( mainPanel, wxID_ANY, wxT("Add"), wxDefaultPosition, wxDefaultSize, 0 );
-	participantProperties_bSizer->Add( addParticipant_btn, 0, wxALL|wxALIGN_RIGHT, 5 );
+	participantProperties_bSizer->Add( addParticipant_btn, 0, wxALL, 5 );
 
 	rmParticipant_btn = new wxButton( mainPanel, wxID_ANY, wxT("Remove"), wxDefaultPosition, wxDefaultSize, 0 );
 	participantProperties_bSizer->Add( rmParticipant_btn, 0, wxALL, 5 );
@@ -80,6 +81,9 @@ AddParticipantsFrame::AddParticipantsFrame( wxWindow* parent, wxWindowID id, con
 	rmParticipant_btn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddParticipantsFrame::RemoveParticipantBtnClick ), NULL, this );
 	finish_btn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddParticipantsFrame::FinishBtnClick ), NULL, this );
 	cancel_btn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddParticipantsFrame::CancelBtnClick ), NULL, this );
+
+	this->plist = plist;
+	this->parent_plist = parent_plist;
 }
 
 AddParticipantsFrame::~AddParticipantsFrame()
@@ -90,4 +94,59 @@ AddParticipantsFrame::~AddParticipantsFrame()
 	finish_btn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddParticipantsFrame::FinishBtnClick ), NULL, this );
 	cancel_btn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddParticipantsFrame::CancelBtnClick ), NULL, this );
 
+}
+
+void AddParticipantsFrame::AddParticipantBtnClick(wxCommandEvent& event)
+{
+	if (!this->participantName_textCtrl->IsEmpty()) {
+		this->newParticipants_listBox->Append(this->participantName_textCtrl->GetValue());
+		this->participantName_textCtrl->Clear();
+	}
+}
+
+void AddParticipantsFrame::RemoveParticipantBtnClick(wxCommandEvent& event)
+{
+	int selected_index = this->newParticipants_listBox->GetSelection();
+
+	// Check if there are countries in the list
+	if (this->newParticipants_listBox->GetCount() == 0) {
+		wxMessageBox(
+			wxString("The participant list is empty."),
+			"Cannot remove participant",
+			wxOK | wxICON_ERROR,
+			this
+		);
+
+		return;
+	}
+
+	// Check if the user selected an item
+	if (selected_index < 0) {
+		wxMessageBox(
+			wxString("You have not selected a participant to be deleted."),
+			"Cannot remove participant",
+			wxOK | wxICON_WARNING,
+			this
+		);
+
+		return;
+	}
+
+	this->newParticipants_listBox->Delete(selected_index);
+}
+
+void AddParticipantsFrame::FinishBtnClick(wxCommandEvent& event)
+{
+	while (!this->newParticipants_listBox->IsEmpty()) {
+		this->plist->addParticipant(this->newParticipants_listBox->GetString(0).ToStdString());
+		this->parent_plist->Append(this->newParticipants_listBox->GetString(0));
+		this->newParticipants_listBox->Delete(0);
+	}
+	
+	this->Destroy();
+}
+
+void AddParticipantsFrame::CancelBtnClick(wxCommandEvent& event)
+{
+	this->Destroy();
 }
