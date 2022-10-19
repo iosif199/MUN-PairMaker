@@ -35,10 +35,13 @@ protected:
 	wxListBox*		parent_list;
 
 	// Virtual event handlers, overide them in your derived class
+	virtual void OnCountryName_Enter(wxCommandEvent& event);
 	virtual void AddCountryBtnClick(wxCommandEvent& event);
 	virtual void RemoveCountryBtnClick(wxCommandEvent& event);
 	virtual void FinishBtnClick(wxCommandEvent& event);
 	virtual void CancelBtnClick(wxCommandEvent& event);
+
+	void AddCountryFromTextCtrl();
 
 
 public:
