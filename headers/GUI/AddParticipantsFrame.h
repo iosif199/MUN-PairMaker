@@ -36,11 +36,13 @@ protected:
 	wxListBox*			parent_plist;
 
 	// Virtual event handlers, overide them in your derived class
+	virtual void OnParticipantName_Enter(wxCommandEvent& event);
 	virtual void AddParticipantBtnClick(wxCommandEvent& event);
 	virtual void RemoveParticipantBtnClick(wxCommandEvent& event);
 	virtual void FinishBtnClick(wxCommandEvent& event);
 	virtual void CancelBtnClick(wxCommandEvent& event);
 
+	void AddParticipantFromTextCtrl();
 
 public:
 
