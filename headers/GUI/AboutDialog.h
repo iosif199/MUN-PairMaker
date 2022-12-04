@@ -30,6 +30,7 @@ protected:
 	wxStaticText* m_staticText121;
 	wxStaticText* m_staticText131;
 	wxStaticLine* m_staticline8;
+	wxStaticText* m_staticText19;
 
 public:
 
@@ -38,7 +39,7 @@ public:
 		wxWindowID id = wxID_ANY,
 		const wxString& title = wxT("About MUN PairMaker"),
 		const wxPoint& pos = wxDefaultPosition,
-		const wxSize& size = wxSize(400, 288),
+		const wxSize& size = wxSize(400, 350),
 		long style = wxDEFAULT_DIALOG_STYLE | wxSTAY_ON_TOP
 	);
 

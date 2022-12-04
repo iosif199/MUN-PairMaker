@@ -100,6 +100,10 @@ AboutDialog::AboutDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	m_staticline8 = new wxStaticLine( m_panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer12->Add( m_staticline8, 0, wxEXPAND | wxALL, 5 );
 
+	m_staticText19 = new wxStaticText(m_panel2, wxID_ANY, wxT("\"Δώρο για εσένα μελλοντικέ MUN Director, αυτό το πρόγραμμα, για να μην ξεφυσάς πρίν από κάθε προπόνηση!\"\n-Με αγάπη, Ελίζα Περβανίδη (MUN Director 2020-2022)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL);
+	m_staticText19->Wrap(-1);
+	bSizer12->Add(m_staticText19, 1, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+
 
 	m_panel2->SetSizer( bSizer12 );
 	m_panel2->Layout();
