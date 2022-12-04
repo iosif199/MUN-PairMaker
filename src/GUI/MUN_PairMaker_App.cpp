@@ -7,9 +7,8 @@ bool MUN_PairMaker_App::OnInit()
 	}
 
 	PairMaker_MainFrame* mainFrame = new PairMaker_MainFrame(NULL);
-	mainFrame->Show(true);
 	mainFrame->SetIcon(wxICON(mun_pairmaker_icon));
-
+	mainFrame->Show(true);
 
 	return true;
 }

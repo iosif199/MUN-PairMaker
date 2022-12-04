@@ -139,6 +139,8 @@ void PairMaker::writePairsToCSV(std::string fname, const char* separator)
 {
 	std::ofstream output_csv(fname);
 
+	output_csv << "sep=" << separator << std::endl;
+
 	output_csv << "Country" << separator << "Participant" << std::endl;
 
 	for (const auto pair : *this->pairs) {
