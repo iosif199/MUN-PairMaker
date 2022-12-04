@@ -150,10 +150,10 @@ void DisplayPairsFrame::populatePairList()
 	col_participant.SetId(0);
 	col_participant.SetText(_("Participant"));
 	col_participant.SetWidth(200);
-	this->pairs_listCtrl->InsertColumn(0, col_participant);
+	this->pairs_listCtrl->InsertColumn(1, col_participant);
 
 	for (const auto& pairs : this->pair_maker->getPairs()) {
-		long itemIndex = this->pairs_listCtrl->InsertItem(0, pairs.second);
-		this->pairs_listCtrl->SetItem(itemIndex, 1, pairs.first);
+		long itemIndex = this->pairs_listCtrl->InsertItem(0, pairs.first);
+		this->pairs_listCtrl->SetItem(itemIndex, 1, pairs.second);
 	}
 }
